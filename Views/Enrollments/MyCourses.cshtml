@@ -1,0 +1,47 @@
+@model MyCoursesViewModel
+@{
+    ViewData["Title"] = "My courses";
+}
+
+<h2>My courses</h2>
+
+<form method="get" asp-action="MyCourses" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <select name="studentId" class="form-select" onchange="this.form.submit()">
+            <option value="">-- choose student --</option>
+            @foreach (var student in Model.Students)
+            {
+                <option value="@student.Value" selected="@(student.Value == Model.SelectedStudentId?.ToString())">@student.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-primary">Show</button></div>
+</form>
+
+@if (Model.SelectedStudentId is not null)
+{
+    if (Model.Enrollments.Count == 0)
+    {
+        <p class="text-muted">This student is not enrolled in any course yet.</p>
+    }
+    else
+    {
+        <table class="table table-striped align-middle">
+            <thead><tr><th>Course</th><th>Instructor</th><th>Enrolled on</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var enrollment in Model.Enrollments)
+            {
+                <tr>
+                    <td>@enrollment.Course?.Name</td>
+                    <td>@enrollment.Course?.Instructor?.FullName</td>
+                    <td>@enrollment.EnrolledAt.ToString("yyyy-MM-dd")</td>
+                    <td class="text-end">
+                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@enrollment.CourseId" class="btn btn-sm btn-outline-secondary">Open</a>
+                        <a asp-controller="Reviews" asp-action="Create" asp-route-courseId="@enrollment.CourseId" class="btn btn-sm btn-outline-primary">Review</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+}

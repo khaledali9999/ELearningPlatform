@@ -1,0 +1,9 @@
+@model StudentFormViewModel
+@{
+    ViewData["Title"] = "Add student";
+}
+
+<h2>Add student</h2>
+<form asp-action="Create" method="post">
+    <partial name="_StudentForm" model="Model" />
+</form>

@@ -1,0 +1,14 @@
+@model Student
+@{
+    ViewData["Title"] = "Delete student";
+}
+
+<h2>Delete student</h2>
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.FullName</strong> (@Model.Email)?
+    Their enrollments and reviews will be deleted too.
+</div>
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
